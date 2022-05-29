@@ -1,0 +1,194 @@
+https://linuxcontainers.org/lxd/getting-started-cli/
+
+lxd init	(config)
+
+config:
+  core.https_address: '[::]:8443'
+  core.trust_password: daniel00
+networks:
+- config:
+    ipv4.address: auto
+    ipv6.address: auto
+  description: ""
+  name: lxdbr0
+  type: ""
+storage_pools:
+- config:
+    size: 60GB
+  description: ""
+  name: default
+  driver: zfs
+profiles:
+- config: {}
+  description: ""
+  devices:
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    root:
+      path: /
+      pool: default
+      type: disk
+  name: default
+cluster: null
+
+
+
+
+lxc profile list
++---------+---------+
+|  NAME   | USED BY |
++---------+---------+
+| default | 0       |
++---------+---------+
+
+
+lxc profile show default
+config: {}
+description: Default LXD profile
+devices:
+  eth0:
+    name: eth0
+    network: lxdbr0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+name: default
+used_by: []
+
+
+lxc network list
++-----------+----------+---------+-------------+---------+
+|   NAME    |   TYPE   | MANAGED | DESCRIPTION | USED BY |
++-----------+----------+---------+-------------+---------+
+| enp4s0    | physical | NO      |             | 0       |
++-----------+----------+---------+-------------+---------+
+| lxdbr0    | bridge   | YES     |             | 1       |
++-----------+----------+---------+-------------+---------+
+| virbr0    | bridge   | NO      |             | 0       |
++-----------+----------+---------+-------------+---------+
+| wlp0s20f3 | physical | NO      |             | 0       |
++-----------+----------+---------+-------------+---------+
+
+
+lxc network show lxdbr0
+config:
+  ipv4.address: 10.217.207.1/24
+  ipv4.nat: "true"
+  ipv6.address: fd42:321e:8008:cbab::1/64
+  ipv6.nat: "true"
+description: ""
+name: lxdbr0
+type: bridge
+used_by:
+- /1.0/profiles/default
+managed: true
+status: Created
+locations:
+- none
+
+
+lxc storage list
++---------+-------------+--------+--------------------------------------------+---------+
+|  NAME   | DESCRIPTION | DRIVER |                   SOURCE                   | USED BY |
++---------+-------------+--------+--------------------------------------------+---------+
+| default |             | zfs    | /var/snap/lxd/common/lxd/disks/default.img | 1       |
++---------+-------------+--------+--------------------------------------------+---------+
+
+
+lxc storage show default 
+config:
+  size: 60GB
+  source: /var/snap/lxd/common/lxd/disks/default.img
+  zfs.pool_name: default
+description: ""
+name: default
+driver: zfs
+used_by:
+- /1.0/profiles/default
+status: Created
+locations:
+- none
+
+
+lxc image list images:
+lxc image list images: | grep -i debian
+
+
+https://linuxcontainers.org/lxd/getting-started-cli/
+
+
+Ubuntu Linux 16.04 or 18.04 or 20.04 or 22.04 LTS container
+
+lxc launch images:ubuntu/xenial/amd64 ubuntu-xenial-c3
+lxc launch images:ubuntu/bionic/amd64 ubuntu-bionic-c4
+lxc launch images:ubuntu/focal/amd64 ubuntu-focal-c5
+lxc launch images:ubuntu/jammy/amd64 ubuntu-jammy-c6
+
+Debian Linux 9.x “stretch” or 10.x container
+
+lxc launch images:debian/stretch/amd64 debian-9-c6
+lxc launch images:debian/10/amd64 debian-10-www
+
+Oracle Linux 8.x VM
+
+lxc launch images:oracle/8/amd64 oracle-8-c11
+
+
+lxc list --fast
+lxc list | grep RUNNING
+lxc list | grep STOPPED
+lxc list | grep -i opensuse
+lxc list "*c1*"
+lxc list "*c2*"
+lxc list
+
+
+lxc exec containerName -- command
+lxc exec containerName -- /path/to/script
+lxc exec containerName --env EDITOR=/usr/bin/vim -- command
+### run date, ip a, ip rm and other commands on various containers ###
+lxc exec cenots-8-c2 -- date
+lxc exec cenots-8-c2 -- ip a
+lxc exec ubuntu-focal-c5 -- ip r
+lxc exec fedora-31-c9 -- dnf -y update
+lxc exec debian-10-www -- cat /etc/debian_version 
+
+
+lxc exec debian-10-www bash
+lxc exec alpine-c1 sh
+
+
+lxc start oracle-8-c11
+lxc stop alpine-c1
+lxc restart gentoo-c8
+
+
+lxc delete ubuntu-xenial-c3
+lxc info opensuse15-1-c10
+
+
+copy file from lxc
+lxc file pull ubuntu-xenial-c3/var/www/nginx/app/config.php .
+
+copy file to lxc
+lxc file push config.php ubuntu-xenial-c3/var/www/nginx/app/
+
+
+lxc --help
+lxc {command} --help
+lxc list --help
+
+
+Run the first config command:
+lxc config device override webserver eth0
+
+
+Now set the static IP:
+lxc config device set webserver eth0 ipv4.address your_webserver_container_ip
+
+https://linuxcontainers.org/lxd/getting-started-cli/
+
