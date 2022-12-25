@@ -192,3 +192,5 @@ lxc config device set webserver eth0 ipv4.address your_webserver_container_ip
 
 https://linuxcontainers.org/lxd/getting-started-cli/
 
+# ok
+
