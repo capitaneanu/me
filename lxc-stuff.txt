@@ -34,8 +34,6 @@ profiles:
 cluster: null
 
 
-
-
 lxc profile list
 +---------+---------+
 |  NAME   | USED BY |
