@@ -9,13 +9,13 @@ pipeline {
 
     stage('test1') {
       parallel {
-        stage('test1') {
+        stage('test1.1') {
           steps {
-            echo 'test1 step'
+            echo 'test1.1 step'
           }
         }
 
-        stage('') {
+        stage('test1.2') {
           steps {
             echo 'test 1.2'
           }
@@ -25,8 +25,34 @@ pipeline {
     }
 
     stage('test2') {
-      steps {
-        echo 'test2 step'
+      parallel {
+
+        stage('test2.1') {
+          steps {
+            echo 'test 2.1'
+          }
+        }
+        
+        
+        stage('test2.2') {
+          steps {
+            echo 'test 2.2'
+          }
+        }
+        
+        
+        stage('test2.3') {
+          steps {
+            echo 'test 2.3'
+          }
+        }
+        
+        
+        stage('test2.4') {
+          steps {
+            echo 'test 2.4'
+          }
+        }
       }
     }
 
